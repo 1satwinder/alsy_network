@@ -1,0 +1,41 @@
+<div class="person">
+    @if($autoPoolMember)
+        @php $autoPoolMember->load('member'); @endphp
+        <div tabindex="0" data-bs-html="true"
+             data-bs-container="body"
+             title="{{ $autoPoolMember->member->code }}" data-bs-toggle="popover"
+             data-bs-trigger="{{ Agent::isMobile() ? 'focus' : 'hover'}}"
+             data-bs-original-title="{{ $autoPoolMember->member->code }}"
+             data-bs-content="@include('member.autopool-geneaology.popover', ['member' => $autoPoolMember->member])">
+            @if(Agent::isMobile())
+                <img src="{{ $autoPoolMember->member->present()->genealogyImage() }}"
+                     alt="{{ $autoPoolMember->member->code }}"
+                     style="background-color: {{ $autoPoolMember->member->present()->genealogyImageBackground() }};">
+            @else
+                <a href="{{ route('member.autopool.show',[$magicPool->id, $autoPoolMember->member->code]) }}">
+                    <img src="{{ $autoPoolMember->member->present()->genealogyImage() }}"
+                         alt="{{ $autoPoolMember->member->code }}"
+                         style="background-color: {{ $autoPoolMember->member->present()->genealogyImageBackground() }};">
+                </a>
+            @endif
+        </div>
+        <div class="name">
+            @if(Agent::isMobile())
+                <span>
+                    <a href="{{ route('member.autopool.show', [$magicPool->id, $autoPoolMember->member->code]) }}">{{ $autoPoolMember->member->user->name }}</a>
+                </span>
+                <span> @include('copy-text', ['text' => $autoPoolMember->member->code])</span>
+            @else
+                @php $autoPoolMember->load('member.user') @endphp
+                <span class="d-block">{{ ucwords($autoPoolMember->member->user->name) }}</span>
+                <span>@include('copy-text',['text' => $autoPoolMember->member->code])</span>
+            @endif
+        </div>
+    @else
+        <img src="{{ asset('images/add.png') }}"
+             alt="Empty" class="" style="   background-color: gray">
+        <p class="name">
+            Empty
+        </p>
+    @endif
+</div>

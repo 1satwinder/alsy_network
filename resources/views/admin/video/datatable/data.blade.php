@@ -1,0 +1,3 @@
+<p>
+    {{ $model->description }}
+</p>
