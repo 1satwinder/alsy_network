@@ -17,6 +17,30 @@ class Sms
             if (env('APP_ENV') == 'local') {
                 Log::info($message);
             }
+            
+            if (env('SMS_PROVIDER') === 'bulksmsplans') {
+                if (env('SMS_BULKSMS_API_ID') && env('SMS_BULKSMS_API_PASSWORD')) {
+                    try {
+                        $response = Http::timeout(30)
+                            ->post('https://www.bulksmsplans.com/api/send_sms', [
+                                'api_id' => env('SMS_BULKSMS_API_ID'),
+                                'api_password' => env('SMS_BULKSMS_API_PASSWORD'),
+                                'sms_type' => env('SMS_BULKSMS_TYPE', 'Transactional'),
+                                'sms_encoding' => env('SMS_BULKSMS_ENCODING', 'text'),
+                                'sender' => env('SMS_BULKSMS_SENDER_ID', 'BLKSMS'),
+                                'number' => $to,
+                                'message' => $message,
+                                'template_id' => '0'
+                            ]);
+                        
+                        Log::info('BulkSMS Response: ' . $response->body());
+                        return $response->body();
+                    } catch (Throwable $e) {
+                        Log::error('BulkSMS Error: ' . $e->getMessage());
+                    }
+                }
+            }
+            
             if (env('SMS_PROVIDER') === 'mobtexting') {
                 if (env('SMS_KEY')) {
                     try {
@@ -58,6 +82,29 @@ class Sms
 
     public static function balance()
     {
+        if (env('SMS_PROVIDER') === 'bulksmsplans') {
+            if (!env('SMS_BULKSMS_API_ID') || !env('SMS_BULKSMS_API_PASSWORD') || !settings('sms_enabled')) {
+                return null;
+            }
+
+            try {
+                $response = Http::timeout(30)
+                    ->post('https://www.bulksmsplans.com/api/balance', [
+                        'api_id' => env('SMS_BULKSMS_API_ID'),
+                        'api_password' => env('SMS_BULKSMS_API_PASSWORD'),
+                    ]);
+                
+                $data = $response->json();
+                Log::info('BulkSMS Balance Response: ' . $response->body());
+                
+                // Return balance if available in response
+                return $data['balance'] ?? null;
+            } catch (Throwable $e) {
+                Log::error('BulkSMS Balance Error: ' . $e->getMessage());
+                return null;
+            }
+        }
+        
         if (env('SMS_PROVIDER') === 'mobtexting') {
             if (! env('SMS_KEY') || ! settings('sms_enabled')) {
                 return null;
