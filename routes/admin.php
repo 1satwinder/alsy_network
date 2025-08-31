@@ -238,8 +238,9 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.', 'prefix' => 'admin'], fu
         ], function () {
             Route::any('create', 'WebsitePopupController@create')->name('create')->middleware('permission:Website Settings-read');
             Route::post('', 'WebsitePopupController@store')->name('store')->middleware('permission:Website Settings-create');
-            Route::post('{popup}/update', 'WebsitePopupController@update')->name('update')->middleware('permission:Website Settings-update');
-            Route::delete('{popup}/destroy', 'WebsitePopupController@destroy')->name('destroy')->middleware('permission:Website Settings-delete');
+            Route::get('{websitePopup}/edit', 'WebsitePopupController@edit')->name('edit')->middleware('permission:Website Settings-update');
+            Route::post('{websitePopup}/update', 'WebsitePopupController@update')->name('update')->middleware('permission:Website Settings-update');
+            Route::delete('{websitePopup}/destroy', 'WebsitePopupController@destroy')->name('destroy')->middleware('permission:Website Settings-delete');
         });
 
         Route::group([

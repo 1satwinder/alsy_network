@@ -71,42 +71,54 @@ class WebsitePopupController extends Controller
     }
 
     /**
+     * Show the form for editing the specified popup.
+     */
+    public function edit(WebsitePopup $websitePopup): Factory|View
+    {
+        return view('admin.website-popup.edit', [
+            'popup' => $websitePopup,
+        ]);
+    }
+
+    /**
      * @return RedirectResponse|mixed
      *
      * @throws ValidationException
      */
-    public function update(WebsitePopup $popup, Request $request): mixed
+    public function update(WebsitePopup $websitePopup, Request $request): mixed
     {
         $this->validate($request, [
-            //            'images.*' => 'required',
-            'popupNames.*' => 'required',
-            'popupStatuses.*' => 'required|in:'.implode(',', [WebsitePopup::STATUS_ACTIVE, WebsitePopup::STATUS_INACTIVE]),
+            'name' => 'required|max:255',
+            'status' => 'required|in:'.implode(',', [WebsitePopup::STATUS_ACTIVE, WebsitePopup::STATUS_INACTIVE]),
         ], [
-            'popupNames.*.required' => 'The popup name is required',
+            'name.required' => 'The popup name is required',
+            'name.max' => 'The name must not be greater than 255 characters',
         ]);
 
         try {
-            return DB::transaction(function () use ($request, $popup) {
-                $popup->status = $request->input('status');
-
-                if ($request->input('name')) {
-                    $popup->name = $request->input('name');
+            return DB::transaction(function () use ($request, $websitePopup) {
+                $websitePopup->name = $request->input('name');
+                $websitePopup->status = $request->input('status');
+                
+                if ($request->input('link')) {
+                    $websitePopup->link = $request->input('link');
                 }
 
-                if ($request->input('links')) {
-                    $popup->links = $request->input('links');
+                $websitePopup->save();
+
+                // Handle image update if provided
+                if ($request->input('image')) {
+                    // Clear existing media
+                    $websitePopup->clearMediaCollection(WebsitePopup::MEDIA_COLLECTION_IMAGE_WEBSITE_POPUP);
+                    
+                    // Add new image
+                    $websitePopup->addMediaFromDisk($request->input('image'))
+                        ->toMediaCollection(WebsitePopup::MEDIA_COLLECTION_IMAGE_WEBSITE_POPUP);
                 }
-
-                $popup->save();
-
-                $popup->addMediaFromDisk($request->input('image'))
-                    ->toMediaCollection(WebsitePopup::MEDIA_COLLECTION_IMAGE_WEBSITE_POPUP);
 
                 return redirect()->back()->with(['success' => 'Website Popup updated successfully']);
             });
         } catch (Throwable $e) {
-            dd($e);
-
             return redirect()->back()->with(['error' => 'Something went wrong. Please try again.']);
         }
     }
@@ -114,11 +126,14 @@ class WebsitePopupController extends Controller
     /**
      * @return RedirectResponse
      */
-    public function destroy(WebsitePopup $popup): mixed
+    public function destroy(WebsitePopup $websitePopup): mixed
     {
         try {
-            return DB::transaction(function () use ($popup) {
-                $popup->delete();
+            return DB::transaction(function () use ($websitePopup) {
+                // Clear media before deleting
+                $websitePopup->clearMediaCollection(WebsitePopup::MEDIA_COLLECTION_IMAGE_WEBSITE_POPUP);
+                
+                $websitePopup->delete();
 
                 return redirect()->back()->with(['success' => 'Website popup deleted successfully']);
             });
