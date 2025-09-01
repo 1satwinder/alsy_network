@@ -22,30 +22,27 @@ class RewardBonusDetailListBuilder extends ListBuilder
         );
     }
 
-    public static function columns(): array
-    {
-        return [
-            new ListBuilderColumn(
-                name: 'Action',
-                property: 'action',
-                view: 'admin.reward-bonus.datatable.action',
-                shouldExport: false,
-            ),
-            new ListBuilderColumn(
-                name: 'Level',
-                property: 'level',
-                filterType: ListBuilderColumn::TYPE_TEXT
-            ),
-            new ListBuilderColumn(
-                name: 'Active Member (Target)',
-                property: 'target_active_member',
-                filterType: ListBuilderColumn::TYPE_NUMBER_RANGE
-            ),
-            new ListBuilderColumn(
-                name: 'Reward',
-                property: 'reward',
-                filterType: ListBuilderColumn::TYPE_TEXT
-            ),
-        ];
-    }
+// ... existing code ...
+public static function columns(): array
+{
+    return [
+        new ListBuilderColumn(
+            name: 'Action',
+            property: 'action',
+            view: 'admin.reward-bonus.datatable.action',
+            shouldExport: false,
+        ),
+        new ListBuilderColumn(
+            name: 'Level',
+            property: 'display_level', // Changed to use formatted level
+            filterType: ListBuilderColumn::TYPE_TEXT
+        ),
+        new ListBuilderColumn(
+            name: 'Reward',
+            property: 'reward',
+            filterType: ListBuilderColumn::TYPE_TEXT
+        ),
+    ];
+}
+// ... existing code ...
 }

@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|RewardBonus whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+// ... existing code ...
 class RewardBonus extends Model
 {
     use HasFactory;
@@ -38,4 +39,21 @@ class RewardBonus extends Model
     {
         return $this->hasMany(RewardBonusIncome::class);
     }
+
+    /**
+     * Get formatted level with "Level" prefix
+     */
+    public function getFormattedLevelAttribute(): string
+    {
+        return "Level {$this->level}";
+    }
+
+    /**
+     * Get the level for display (with "Level" prefix)
+     */
+    public function getDisplayLevelAttribute(): string
+    {
+        return "Level {$this->level}";
+    }
 }
+// ... existing code ...
