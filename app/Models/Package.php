@@ -103,6 +103,16 @@ class Package extends Model implements HasMedia
     }
 
     /**
+     * Get the magic pool allocation amount for this package
+     * 
+     * @return float Fixed allocation amount (₹200)
+     */
+    public function getMagicPoolAllocationAmount(): float
+    {
+        return \App\Helpers\MagicPoolHelper::calculateAllocationAmount($this);
+    }
+
+    /**
      * @return Builder
      */
     public function scopeActive(Builder $query)

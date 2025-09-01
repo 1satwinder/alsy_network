@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Helpers\MagicPoolHelper;
 use App\Models\MagicPool;
 use App\Models\MagicPoolTree;
 use App\Models\Member;
@@ -10,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class AddMemberOnPool implements ShouldQueue
@@ -36,6 +38,10 @@ class AddMemberOnPool implements ShouldQueue
      */
     public function handle(): void
     {
+        // Log the fixed magic pool allocation amount
+        $allocationAmount = MagicPoolHelper::calculateAllocationAmount($this->member->package);
+        Log::info("Magic Pool Allocation: Member {$this->member->id} allocated ₹{$allocationAmount} to {$this->member->magicPool->name} (Fixed amount regardless of package price)");
+        
         $magicPoolMember = \DB::transaction(function () {
             if (MagicPoolTree::where('member_id', $this->member->id)
                 ->where('magic_pool_id', $this->magicPool->id)
