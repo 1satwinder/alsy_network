@@ -1,9 +1,9 @@
 /* Package Image Display Fixes */
 /* This file fixes the cropping issues with package images */
 
-/* Override the problematic gallery styles for package images */
+/* Target the gallery elements within package cards */
 .package-card .gallery,
-.pricing .gallery {
+.package-card .image-popup.gallery {
     position: relative;
     margin-bottom: 20px;
     display: block;
@@ -15,7 +15,7 @@
 }
 
 .package-card .gallery img,
-.pricing .gallery img {
+.package-card .image-popup.gallery img {
     display: block;
     width: 100%;
     height: auto !important; /* Let image maintain aspect ratio */
@@ -25,9 +25,32 @@
     transition: transform 0.3s ease;
 }
 
+/* Also target the problematic global gallery styles */
+.gallery {
+    position: relative;
+    margin-bottom: 20px;
+    display: block;
+    width: 100%;
+    height: auto !important; /* Override the fixed 200px height */
+    min-height: 200px;       /* Minimum height for consistency */
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.gallery img {
+    display: block;
+    width: 100%;
+    height: auto !important; /* Override the fixed height */
+    max-height: 300px;       /* Maximum height to prevent oversized images */
+    object-fit: contain !important; /* Show full image without cropping */
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
 /* Hover effect for better UX */
 .package-card .gallery:hover img,
-.pricing .gallery:hover img {
+.package-card .image-popup.gallery:hover img,
+.gallery:hover img {
     transform: scale(1.05);
 }
 
@@ -46,38 +69,63 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .package-card .gallery,
-    .pricing .gallery {
+    .package-card .image-popup.gallery,
+    .gallery {
         min-height: 150px;
     }
     
     .package-card .gallery img,
-    .pricing .gallery img {
+    .package-card .image-popup.gallery img,
+    .gallery img {
         max-height: 200px;
     }
 }
 
 /* Alternative: Square aspect ratio option */
 .package-card .gallery.square-ratio,
-.pricing .gallery.square-ratio {
+.pricing .gallery.square-ratio,
+.gallery.square-ratio {
     aspect-ratio: 1;
     height: 250px !important;
 }
 
 .package-card .gallery.square-ratio img,
-.pricing .gallery.square-ratio img {
+.pricing .gallery.square-ratio img,
+.gallery.square-ratio img {
     height: 100% !important;
     object-fit: contain !important;
 }
 
 /* Compact layout option */
 .package-card .gallery.compact,
-.pricing .gallery.compact {
+.pricing .gallery.compact,
+.gallery.compact {
     height: 120px !important;
     margin-bottom: 10px;
 }
 
 .package-card .gallery.compact img,
-.pricing .gallery.compact img {
+.pricing .gallery.compact img,
+.gallery.compact img {
     height: 100% !important;
+    object-fit: contain !important;
+}
+
+/* Force override for any remaining problematic styles */
+.gallery img[src*="storage"] {
+    height: auto !important;
+    object-fit: contain !important;
+    max-height: 300px !important;
+}
+
+/* Additional specificity to override existing styles */
+.col-md-6 .gallery,
+.col-md-4 .gallery {
+    height: auto !important;
+}
+
+.col-md-6 .gallery img,
+.col-md-4 .gallery img {
+    height: auto !important;
     object-fit: contain !important;
 }
