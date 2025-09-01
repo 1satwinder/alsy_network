@@ -1,0 +1,83 @@
+/* Package Image Display Fixes */
+/* This file fixes the cropping issues with package images */
+
+/* Override the problematic gallery styles for package images */
+.package-card .gallery,
+.pricing .gallery {
+    position: relative;
+    margin-bottom: 20px;
+    display: block;
+    width: 100%;
+    height: auto !important; /* Remove fixed height */
+    min-height: 200px;       /* Minimum height for consistency */
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.package-card .gallery img,
+.pricing .gallery img {
+    display: block;
+    width: 100%;
+    height: auto !important; /* Let image maintain aspect ratio */
+    max-height: 300px;       /* Maximum height to prevent oversized images */
+    object-fit: contain !important; /* Show full image without cropping */
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect for better UX */
+.package-card .gallery:hover img,
+.pricing .gallery:hover img {
+    transform: scale(1.05);
+}
+
+/* Package card specific styling */
+.pricing.card {
+    overflow: hidden;
+}
+
+.pricing.card .gallery {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .package-card .gallery,
+    .pricing .gallery {
+        min-height: 150px;
+    }
+    
+    .package-card .gallery img,
+    .pricing .gallery img {
+        max-height: 200px;
+    }
+}
+
+/* Alternative: Square aspect ratio option */
+.package-card .gallery.square-ratio,
+.pricing .gallery.square-ratio {
+    aspect-ratio: 1;
+    height: 250px !important;
+}
+
+.package-card .gallery.square-ratio img,
+.pricing .gallery.square-ratio img {
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+/* Compact layout option */
+.package-card .gallery.compact,
+.pricing .gallery.compact {
+    height: 120px !important;
+    margin-bottom: 10px;
+}
+
+.package-card .gallery.compact img,
+.pricing .gallery.compact img {
+    height: 100% !important;
+    object-fit: contain !important;
+}

@@ -205,7 +205,7 @@
                         <div class="row gy-6 position-relative mt-5 match-height">
 
                             @foreach($packages as $key => $package)
-                                <div class="col-md-6 popular">
+                                <div class="col-md-6 popular package-card">
                                     <a href="{{ optional($package)->getFirstMediaUrl(\App\Models\Package::MC_PACKAGE_IMAGE) ?: '/images/no_image.png' }}"
                                        class='image-popup gallery' data-toggle='tooltip'
                                        data-original-title='Click here to zoom image'>
@@ -422,8 +422,9 @@
     @endpush
 
     @section('page-css')
-        <script src="{{ asset('css/lightbox.css') }}"></script>
-    @endsection
+    <link rel="stylesheet" href="{{ asset('css/lightbox.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/package-images.css') }}">
+@endsection
 @endpush
 
 

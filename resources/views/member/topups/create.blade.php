@@ -1,5 +1,9 @@
 @extends('member.layouts.master')
 
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/package-images.css') }}">
+@endsection
+
 @section('title')
     Create Topup
 @endsection
@@ -88,7 +92,7 @@
             <div class="col-lg-8">
                 <div class="row">
                     @foreach($packages as $key => $package)
-                        <div class="col-md-4">
+                        <div class="col-md-4 package-card">
                             <div class="pricing card shadow-lg">
                                 <a href="{{ optional($package)->getFirstMediaUrl(\App\Models\Package::MC_PACKAGE_IMAGE) ?: '/images/no_image.png' }}"
                                    class='image-popup gallery' data-toggle='tooltip'
