@@ -41,14 +41,18 @@ class PackageController extends Controller
         $this->validate($request, [
             'name' => 'required|unique:packages,name',
             'pv' => 'required|numeric|min:0',
+            'package_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120', // 5MB max
             'products' => 'required|array|min:1',
             'products.*.name' => 'required',
             'products.*.price' => 'required|numeric|min:0',
             'products.*.hsn_code' => 'required',
             'products.*.gstSlab' => 'required|in:'.implode(',', array_keys(PackageProduct::GST_SLABS)),
-            //            'package_image' => 'required',
         ], [
             'name.required' => 'The Package name is required',
+            'package_image.required' => 'The Package image is required',
+            'package_image.image' => 'The Package image must be an image file',
+            'package_image.mimes' => 'The Package image must be a file of type: jpeg, png, jpg, gif',
+            'package_image.max' => 'The Package image may not be greater than 5MB',
             'products.*.name.required' => 'The products Product/Service Name is required',
             'products.*.price.required' => 'The products DP is required',
             'products.*.hsn_code.required' => 'The products HSN Code is required',
@@ -64,11 +68,8 @@ class PackageController extends Controller
                     'referral_bonus_per' => 40,
                 ]);
 
-                if ($fileName = $request->get('package_image')) {
-                    $filePath = 'tmp/'.Str::beforeLast($fileName, '.');
-
-                    $package->addMediaFromDisk($filePath)
-                        ->usingFileName($fileName)
+                if ($request->hasFile('package_image')) {
+                    $package->addMediaFromRequest('package_image')
                         ->toMediaCollection(Package::MC_PACKAGE_IMAGE);
                 }
 

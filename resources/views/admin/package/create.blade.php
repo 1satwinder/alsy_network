@@ -12,7 +12,7 @@
     ])
 
     <form method="post" action="{{ route('admin.packages.store') }}"
-          class="filePondForm"
+          enctype="multipart/form-data"
           onsubmit="registerButton.disabled = true; return true;">
         @csrf
         <div class="row" >
@@ -25,14 +25,20 @@
                     <div class="card-body" >
                         <div class="row">
                             <div class="form-group mb-3 col-lg-3">
-                                <label for="example-input-large">
+                                <label for="package_image">
                                     Package Image <span class="text-danger">*</span>
                                 </label>
-                                <input type="file" class="filePondInput" name="package_image"
-                                       accept="image/*" required>
+                                <input type="file" id="package_image" name="package_image"
+                                       accept="image/*" required class="form-control" onchange="previewImage(this)">
                                 @foreach($errors->get('package_image') as $error)
                                     <span class="text-danger">{{ $error }}</span>
                                 @endforeach
+                                <small class="form-text text-muted">Supported formats: JPG, PNG, GIF. Max size: 5MB</small>
+                                
+                                <!-- Image Preview -->
+                                <div id="imagePreview" class="mt-2" style="display: none;">
+                                    <img id="previewImg" src="" alt="Preview" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                                </div>
                             </div>
                         </div>
                         <div id="app">
@@ -164,8 +170,6 @@
 @endsection
 
 @push('page-javascript')
-    <script src="{{ asset('js/vapor.min.js') }}"></script>
-    <script src="{{ asset('js/filepond.min.js') }}"></script>
     <script>
         new Vue({
             el: '#app',
@@ -196,5 +200,24 @@
                 }
             }
         })
+        
+        // Image preview functionality
+        function previewImage(input) {
+            const preview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.style.display = 'none';
+            }
+        }
     </script>
 @endpush
