@@ -84,7 +84,7 @@
         @foreach($popups as $index => $popup)
             <div class="col-lg-4">
                 <form method="post" onsubmit="subButton{{$index}}.disabled = true; return true;"
-                      action="{{ route('admin.website-pop.update', $popup) }}"
+                      action="{{ route('admin.member-pop.update', $popup) }}"
                       class="filePondForm">
                     @csrf
                     <div class="card">
@@ -181,7 +181,7 @@
                         </div>
                     </div>
                 </form>
-                <form method="post" action="{{ route('admin.website-pop.destroy', $popup) }}"
+                <form method="post" action="{{ route('admin.member-pop.destroy', $popup) }}"
                       enctype="multipart/form-data" id="deleteBanner{{ $popup->id }}">
                     @csrf
                     @method('delete')
