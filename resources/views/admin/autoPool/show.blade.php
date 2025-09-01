@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-5 d-flex justify-content-center text-center tree">
+                <div class="row mb-5 d-flex justify-content-center text-center tree genealogy-tree">
                     {{--                    <div class="col">--}}
                     {{--                        <img src="{{ asset('images/free-id.svg') }}" class="rounded-circle avatar-md" alt="">--}}
                     {{--                        <p>Free</p>--}}
@@ -66,6 +66,7 @@
     </form>
 @endsection
 @push('page-css')
+    <link rel="stylesheet" href="{{ asset('css/genealogy-tree.css') }}">
     <style>
         @media (max-width: 767.98px) {
             .hv-wrapper {
@@ -88,6 +89,7 @@
 @endpush
 
 @push('page-javascript')
+    <script src="{{ asset('js/genealogy-fallback.js') }}"></script>
     <script>
         function goToMember() {
             var trackingCode = $('#code').val();

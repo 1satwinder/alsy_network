@@ -1,4 +1,4 @@
-<div class="person mb-2">
+<div class="person mb-2 genealogy-tree">
     @if($member)
         <div tabindex="0" data-bs-html="true"
              data-bs-container="body"
@@ -8,12 +8,14 @@
             @if(Agent::isMobile())
                 <img src="{{ $member->present()->genealogyImage() }}"
                      alt="{{ $member->code }}"
-                     style="background-color: {{ $member->present()->genealogyImageBackground() }};">
+                     style="background-color: {{ $member->present()->genealogyImageBackground() }};"
+                     onerror="this.src='{{ asset('images/blank.svg') }}'; this.alt='Member Avatar';">
             @else
                 <a href="{{ route('admin.sponsor-genealogy.show', $member) }}">
                     <img src="{{ $member->present()->genealogyImage() }}"
                          alt="{{ $member->code }}"
-                         style="background-color: {{ $member->present()->genealogyImageBackground() }};">
+                         style="background-color: {{ $member->present()->genealogyImageBackground() }};"
+                         onerror="this.src='{{ asset('images/blank.svg') }}'; this.alt='Member Avatar';">
                 </a>
             @endif
         </div>

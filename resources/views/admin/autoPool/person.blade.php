@@ -1,4 +1,4 @@
-<div class="person">
+<div class="person genealogy-tree">
     @if($autoPoolMember)
         @php $autoPoolMember->load('member'); @endphp
         <div tabindex="0" data-bs-html="true"
@@ -9,12 +9,14 @@
             @if(Agent::isMobile())
                 <img src="{{ $autoPoolMember->member->present()->genealogyImage() }}"
                      alt="{{ $autoPoolMember->member->code }}"
-                     style="background-color: {{ $autoPoolMember->member->present()->genealogyImageBackground() }};">
+                     style="background-color: {{ $autoPoolMember->member->present()->genealogyImageBackground() }};"
+                     onerror="this.src='{{ asset('images/blank.svg') }}'; this.alt='Member Avatar';">
             @else
                 <a href="{{ route('admin.autoPool.show',[$magicPool->id, $autoPoolMember->member->code]) }}">
                     <img src="{{ $autoPoolMember->member->present()->genealogyImage() }}"
                          alt="{{ $autoPoolMember->member->code }}"
-                         style="background-color: {{ $autoPoolMember->member->present()->genealogyImageBackground() }};">
+                         style="background-color: {{ $autoPoolMember->member->present()->genealogyImageBackground() }};"
+                         onerror="this.src='{{ asset('images/blank.svg') }}'; this.alt='Member Avatar';">
                 </a>
             @endif
         </div>

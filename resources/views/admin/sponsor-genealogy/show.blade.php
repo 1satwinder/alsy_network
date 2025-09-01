@@ -1,5 +1,13 @@
 @extends('admin.layouts.master')
 
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/genealogy-tree.css') }}">
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/genealogy-fallback.js') }}"></script>
+@endsection
+
 @section('title') Sponsor Genealogy Tree @endsection
 
 @section('content')
@@ -24,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-5 d-flex justify-content-center text-center tree">
+                <div class="row mb-5 d-flex justify-content-center text-center tree genealogy-tree">
                     @foreach($genealogyIcons as $genealogyIcon)
                         <div class="col">
                             <img src="{{ asset($genealogyIcon['image']) }}"

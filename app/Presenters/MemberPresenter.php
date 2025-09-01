@@ -5,6 +5,7 @@ namespace App\Presenters;
 use App\Models\KYC;
 use App\Models\Member;
 use App\Models\User;
+use Exception;
 use Laracasts\Presenter\Presenter;
 
 /**
@@ -17,15 +18,18 @@ class MemberPresenter extends Presenter
      */
     public function genealogyImage()
     {
-        if (! $image = $this->entity->getFirstMediaUrl(Member::MC_PROFILE_IMAGE)) {
-            if ($this->entity->user->gender == User::GENDER_FEMALE) {
-                $image = asset('images/blank-female.svg');
-            } else {
-                $image = asset('images/blank.svg');
+        // Check if member has a profile image and it's accessible
+        if ($this->entity->hasMedia(Member::MC_PROFILE_IMAGE)) {
+            $image = $this->entity->getFirstMediaUrl(Member::MC_PROFILE_IMAGE);
+            
+            // Only return the image if it's a valid URL
+            if ($image && filter_var($image, FILTER_VALIDATE_URL)) {
+                return $image;
             }
         }
-
-        return $image;
+        
+        // Fallback to blank.svg if no image or invalid image URL
+        return asset('images/blank.svg');
     }
 
     public function genealogyImageBackground(): string

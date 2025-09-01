@@ -35,7 +35,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-5 d-flex justify-content-center text-center tree">
+                <div class="row mb-5 d-flex justify-content-center text-center tree genealogy-tree">
                     @foreach($genealogyIcons as $genealogyIcon)
                         <div class="col">
                             <img src="{{ asset($genealogyIcon['image']) }}"
@@ -67,6 +67,7 @@
     </form>
 @endsection
 @push('page-css')
+    <link rel="stylesheet" href="{{ asset('css/genealogy-tree.css') }}">
     <style>
         @media (max-width: 767.98px) {
             .hv-wrapper {
@@ -88,6 +89,7 @@
     </style>
 @endpush
 @push('page-javascript')
+    <script src="{{ asset('js/genealogy-fallback.js') }}"></script>
     <script>
         function goToMember() {
             var trackingCode = $('#code').val();

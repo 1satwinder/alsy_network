@@ -1,0 +1,95 @@
+/* Genealogy Tree Styling */
+.genealogy-tree .person img,
+.genealogy-tree .person a img,
+.genealogy-tree .person svg {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    /* Ensure SVG icons are properly sized and circular */
+    max-width: 60px !important;
+    max-height: 60px !important;
+}
+
+/* Ensure SVG icons are circular */
+.genealogy-tree .person svg {
+    border-radius: 50% !important;
+    overflow: hidden;
+}
+
+/* Specific styling for blank.svg to ensure proper display */
+.genealogy-tree .person img[src*="blank.svg"] {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    object-fit: contain;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Styling for fallback images */
+.genealogy-tree .person img.image-fallback {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    object-fit: contain;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #e0e0e0;
+}
+
+/* Legend icons styling */
+.tree .col img {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Person container styling */
+.genealogy-tree .person {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.genealogy-tree .person .name {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+}
+
+/* Ensure all genealogy views use this styling */
+.sponsor-genealogy .person img,
+.sponsor-genealogy .person a img,
+.sponsor-genealogy .person svg,
+.autoPool .person img,
+.autoPool .person a img,
+.autoPool .person svg {
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .genealogy-tree .person img,
+    .genealogy-tree .person a img,
+    .genealogy-tree .person svg,
+    .tree .col img {
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+    .genealogy-tree .person .name {
+        font-size: 11px;
+    }
+}
